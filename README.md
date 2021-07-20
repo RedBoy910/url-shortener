@@ -1,2 +1,2 @@
 # url-shortener
-URL Shortener using Node.js and MongoDB
+URL Shortener using Node.js

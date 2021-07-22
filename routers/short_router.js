@@ -1,10 +1,10 @@
 const express = require('express');
-const app = express()
 const debug = require('debug')('app:short_router');
 const router = express.Router();
 const util = require('../utils/url_validator.js');
 const { nanoid } = require('nanoid')
 const urlModel = require('../models/url_model.js');
+const chalk = require('chalk');
 
 require('dotenv').config('.env');
 
@@ -32,15 +32,20 @@ router.post('/', async (req, res) => {
                 });
 
                 await shortPackage.save();
+
+                debug(chalk.green('Shortening succesful'));
                 res.status(201).json({ short: shortUrl });
             }
-        } catch(error) {
-            debug(error);
+        } catch(error){
+            debug(chalk.red(error));
             res.status(500).json('Server error');
         }
     }
     else
+    {
+        debug(chalk.red('Invalid URL syntax'));
         res.status(400).json('Invalid URL');
+    }
 });
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const express = require('express');
 const debug = require('debug')('app:short_router');
 const router = express.Router();
-const util = require('../utils/url_validator.js');
-const { nanoid } = require('nanoid')
+const utilValidator = require('../utils/url_validator.js');
+const utilId = require('../utils/id_generator.js');
 const urlModel = require('../models/url_model.js');
 const chalk = require('chalk');
 
@@ -14,7 +14,7 @@ require('dotenv').config('.env');
 router.post('/', async (req, res) => {
     const { url } = req.body;
 
-    if(util.valid_url(url))
+    if(utilValidator.valid_url(url))
     {
         try{
             const duplicate = await urlModel.findOne({ longUrl: url });
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
             if(duplicate)
                 res.status(201).json({ short: duplicate.shortUrl });
             else{
-                const id = nanoid(12);
+                const id = await utilId.generate_id(parseInt(process.env.ID_LENGTH));
                 const shortUrl = `${process.env.BASE}/${id}`;
 
                 const shortPackage = new urlModel({

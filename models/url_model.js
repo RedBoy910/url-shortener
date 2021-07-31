@@ -9,4 +9,4 @@ const urlSchema = new Schema({
     date: {type: Date, default: Date.now()}
 });
 
-module.exports = mongoose.model('urlModel', urlSchema);
+module.exports = mongoose.model('url-model', urlSchema);

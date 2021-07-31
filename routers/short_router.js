@@ -22,7 +22,8 @@ router.post('/', async (req, res) => {
             if(duplicate)
                 res.status(201).json({ short: duplicate.shortUrl });
             else{
-                const id = await utilId.generate_id(parseInt(process.env.ID_LENGTH));
+                const id = await utilId.generate_id();
+
                 const shortUrl = `${process.env.BASE}/${id}`;
 
                 const shortPackage = new urlModel({

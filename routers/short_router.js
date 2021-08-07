@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const debug = require('debug')('app:short_router');
 const router = express.Router();
 const utilValidator = require('../utils/url_validator.js');
@@ -16,30 +17,46 @@ router.post('/', async (req, res) => {
 
     if(utilValidator.valid_url(url))
     {
-        try{
-            const duplicate = await urlModel.findOne({ longUrl: url });
+        let finished = false;
+        let retry = 0;
 
-            if(duplicate)
-                res.status(201).json({ short: duplicate.shortUrl });
-            else{
-                const id = await utilId.generate_id(parseInt(process.env.ID_LENGTH));
-                const shortUrl = `${process.env.BASE}/${id}`;
-
-                const shortPackage = new urlModel({
-                    longUrl: url,
-                    shortUrl: shortUrl,
-                    date: Date.now()
-                });
-
-                await shortPackage.save();
-
-                debug(chalk.green('Shortening succesful'));
-                res.status(201).json({ short: shortUrl });
+        while (!finished && retry < 20) {
+            try{
+                const duplicate = await urlModel.findOne({ longUrl: url });
+    
+                if(duplicate)
+                    res.status(201).json({ short: duplicate.shortUrl });
+                else{
+                    const id = await utilId.generate_id(parseInt(process.env.ID_LENGTH));
+                    const shortUrl = `${process.env.BASE}/${id}`;
+    
+                    const shortPackage = new urlModel({
+                        _id: id,
+                        longUrl: url,
+                        shortUrl: shortUrl,
+                        date: Date.now()
+                    });
+    
+                    await shortPackage.save();
+    
+                    debug(chalk.green('Shortening succesful'));
+                    res.status(201).json({ short: shortUrl });
+                    finished = true;
+                }
+            } catch(error){
+                if(error.toString().includes('E11000'))
+                    retry++;
+                else
+                {
+                    debug(chalk.red(error));
+                    res.status(500).json('Server error');
+                    finished = true;
+                }
             }
-        } catch(error){
-            debug(chalk.red(error));
-            res.status(500).json('Server error');
         }
+
+        if(retry == 20)
+            res.status(500).json("Fatal Error: out of ID's");
     }
     else
     {

@@ -15,7 +15,7 @@ exports.generate_id = async function (len) {
     do{
         id = nanoid();
 
-        debug(chalk.green(id));
+        //debug(chalk.green(id));
 
         try{
             duplicate = await urlModel.findOne({ shortUrl: `${process.env.BASE}/${id}` });

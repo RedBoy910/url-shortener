@@ -32,5 +32,8 @@
   "nodemonConfig": {
     "delay": 2000,
     "rs": "restart"
+  },
+  "prettier": {
+    "editor.formatOnSave": true
   }
 }

@@ -7,10 +7,15 @@ const redirectRouter = require('./routers/redirect_router.js');
 const db = require('./config/db.js');
 require('dotenv').config('.env');
 const app = express();
+const cors = require('cors');
 
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: `${process.env.ORIGIN}`,
+    optionsSuccessStatus: 200
+}))
 
 //Conectarea la baza de date
 db.connectDB();

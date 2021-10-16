@@ -9,9 +9,10 @@ require('dotenv').config('.env');
 //Functie care redirectioneaza request-ul catre link-ul scurtat catre link-ul original
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
+    //debug(chalk.green(`${process.env.BASE}/r/${id}`));
 
     try{
-        const redirectUrl = await urlModel.findOne({ shortUrl: `${process.env.BASE}/${id}` });
+        const redirectUrl = await urlModel.findOne({ shortUrl: `${process.env.BASE}/r/${id}` });
 
         if(redirectUrl){
             debug(chalk.green('Redirect succesful'));

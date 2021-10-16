@@ -2,10 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const debug = require('debug')('app:short_router');
 const router = express.Router();
-const utilValidator = require('../utils/url_validator.js');
 const utilId = require('../utils/id_generator.js');
 const urlModel = require('../models/url_model.js');
 const chalk = require('chalk');
+const urlExists = require('url-exists-deep');
 
 require('dotenv').config('.env');
 
@@ -13,9 +13,14 @@ require('dotenv').config('.env');
 //Functia verifica daca link-ul din request este unul valid folosind un regexp
 //Functia returneaza link-ul scurtat din baza de date daca exista deja, daca nu genereaza un link scurtat nou
 router.post('/', async (req, res) => {
-    const { url } = req.body;
+    let { url } = req.body;
 
-    if(utilValidator.valid_url(url))
+    if(!url.startsWith("http://") && !url.startsWith("https://"))
+       url = "http://" + url;
+
+    const valid = await urlExists(url);
+
+    if(valid != false)
     {
         let finished = false;
         let retry = 0;
@@ -24,11 +29,13 @@ router.post('/', async (req, res) => {
             try{
                 const duplicate = await urlModel.findOne({ longUrl: url });
     
-                if(duplicate)
+                if(duplicate){
                     res.status(201).json({ short: duplicate.shortUrl });
+                    finished = true;
+                }
                 else{
                     const id = await utilId.generate_id(parseInt(process.env.ID_LENGTH));
-                    const shortUrl = `${process.env.BASE}/${id}`;
+                    const shortUrl = `${process.env.BASE}/r/${id}`;
     
                     const shortPackage = new urlModel({
                         _id: id,

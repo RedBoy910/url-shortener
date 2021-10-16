@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <title>URL Shortener</title>
+  </head>
+  
+  <body>
+
+    <div class="container mt-5">
+      <div class="row mb-3">
+        <h1 class="col text-center" id="main-header">URL Shortener</h1>
+      </div>
+      <div class="row mb-3">
+        <label for="url-input" class="form-label fs-3 fw-bold">URL</label>
+        <input type="url" class="form-control fs-5" id="url-input">
+      </div>
+      <div class="row mb-3">
+        <div class="col-4"></div>
+        <button type="submit" class="btn btn-primary col-4 fs-5" onclick="submit()">Shorten URL</button>
+        <div class="col-4"></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col"></div>
+        <div class="col-auto" id="result-card"></div>
+        <div class="col"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -5,17 +5,14 @@ const morgan = require('morgan');
 const shortRouter = require('./routers/short_router.js');
 const redirectRouter = require('./routers/redirect_router.js');
 const db = require('./config/db.js');
+const path = require('path');
 require('dotenv').config('.env');
 const app = express();
-const cors = require('cors');
 
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-    origin: `${process.env.ORIGIN}`,
-    optionsSuccessStatus: 200
-}))
+app.use(express.static(path.join(__dirname, '/public')));
 
 //Conectarea la baza de date
 db.connectDB();
@@ -24,7 +21,7 @@ db.connectDB();
 app.use('/api/urls', shortRouter);
 
 //Routing pentur redirectionarea request-urilor cu link-uri scurtate
-app.use('/', redirectRouter);
+app.use('/r/', redirectRouter);
 
 app.listen(process.env.PORT, () => {
     debug(`Listening on port ${chalk.green(process.env.PORT)}`);

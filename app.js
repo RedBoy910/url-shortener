@@ -23,6 +23,6 @@ app.use('/api/urls', shortRouter);
 //Routing pentur redirectionarea request-urilor cu link-uri scurtate
 app.use('/r/', redirectRouter);
 
-app.listen(process.env.PORT, () => {
-    debug(`Listening on port ${chalk.green(process.env.PORT)}`);
+app.listen(process.env.BASE, () => {
+    debug(`Listening on port ${chalk.green(process.env.BASE)}`);
 });

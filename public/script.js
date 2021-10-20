@@ -1,6 +1,6 @@
 function submit() {
     const input = document.getElementById("url-input").value;
-    const url = "http://www.tudorlink.com/api/urls";
+    const url = "https://www.tudorlink.com/api/urls";
     const data = {
         url: input
     };

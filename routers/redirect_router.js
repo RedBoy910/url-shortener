@@ -12,7 +12,7 @@ router.get('/:id', async (req, res) => {
     //debug(chalk.green(`${process.env.BASE}/r/${id}`));
 
     try{
-        const redirectUrl = await urlModel.findOne({ shortUrl: `${process.env.BASE}/r/${id}` });
+        const redirectUrl = await urlModel.findOne({ shortUrl: `${process.env.SHORT_BASE}/r/${id}` });
 
         if(redirectUrl){
             debug(chalk.green('Redirect succesful'));

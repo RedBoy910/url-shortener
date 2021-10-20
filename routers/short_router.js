@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
                 }
                 else{
                     const id = await utilId.generate_id(parseInt(process.env.ID_LENGTH));
-                    const shortUrl = `${process.env.BASE}/r/${id}`;
+                    const shortUrl = `${process.env.SHORT_BASE}/r/${id}`;
     
                     const shortPackage = new urlModel({
                         _id: id,
